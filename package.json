@@ -1,0 +1,23 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duyanhja/cst-bot.git"
+  },
+  "author": "James Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duyanhja/cst-bot/issues"
+  },
+  "homepage": "https://github.com/duyanhja/cst-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "firebase": "^5.3.0"
+  }
+}
