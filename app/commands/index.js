@@ -1,6 +1,6 @@
 const help = require('./Help');
 const add = require('./Add');
-const todo = require('./Todo');
+const todo = require('./ToDo');
 const deleteToDo = require('./Delete')
 
 module.exports = {
