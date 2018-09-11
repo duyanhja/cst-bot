@@ -1,111 +1,62 @@
-const firebase = require('firebase');
-const config = require('../auth/config.json');
-
-firebase.initializeApp(config);
-var database = firebase.database();
+const moment = require('moment');
 
 /**
  * Adds event to the database.
  * 
- * @param {*} m - The month the event is occuring/due
- * @param {*} day - The day the event is occuring/due
- * @param {*} t - the hour the event is occuring/due
- * @param {*} description - description of the event
+ * @param {string or number} m - The month the event is occuring/due
+ * @param {number} day - The day the event is occuring/due
+ * @param {number} t - the hour the event is occuring/due
+ * @param {string} description - description of the event
+ * @param {firebase.database} database the firebase database instance
+ * @return {string} returns the formated date inputted
  */
-function addTodoEvent(m, day, t, description) {
-  let today = new Date(Date.now());
-  let year;
+function addTodoEvent(m, d, t, description, database) {
+  let eventDate, year, month, day, time;
 
-  let month = monthToIndex(m);
-
-  if (typeof month !== "string") {
-    return month;
-  }
-
-  if (month === 12 ) {
-    year = today.getFullYear() + 1;
+  if (moment(m, ["M", "MM", "MMM", "MMMM"]).isValid()) {
+    month = moment(m, ["M", "MM", "MMM", "MMMM"]).format("MMM");
   } else {
-    year = today.getFullYear();
+    return "Invalid month";
   }
 
-  let eventDate = new Date(year, month, day)
-  eventDate += time*3600;
+  if (moment(d, ["D", "DD"]).isValid()) {
+    date = moment(d, ["D", "DD"]).format("DD");
+  } else {
+    return "Invalid Date";
+  }
 
-  firebase.database().ref('todo/').set({
+  if (moment(t, ["H", "HH", "h", "hh", "HH:mm","hh:mm a"]).isValid()) {
+    time = moment(t, ["H", "HH", "h", "hh", "HH:mm","hh:mm a", "hh a"]).format("HH:mm");
+  } else {
+    return "invalid time";
+  }
+
+  // assumption that if I add a date in december, it will be for the following year
+  if (moment().format("MM") === "12") {
+    year = parseInt(moment().format("YYYY")) + 1;
+  } else {
+    year = moment().format("YYYY");
+  }
+
+  let dateString = month + "-" + date + "-" + year + " " + time;
+  if (moment(dateString, ["MM-DD-YYYY HH:mm", "MM-DD-YYYY"]).isValid()) {
+    eventDate = moment(dateString, ["MM-DD-YYYY HH", "MM-DD-YYYY H", "MM-DD-YYYY HH:mm", "MMMM-DD-YYYY HH:mm"]).format("MMM-DD-YYYY HH:mm");
+  }
+
+  let sortDate = parseInt(moment(eventDate, "MMM-DD-YYYY HH:mm").format("X"));
+  
+  database.ref('todo/').push({
     date: eventDate,
+    sortDate: sortDate,
+    month: month,
+    day: date,
+    time: moment(time, "HH:mm").format("hh:mma"),
     description: description
   });
 
-  return true;
-
+  return "Added to the Calendar!";
 }
 
 
-/**
- * This function takes the string which represents a month, and converts it
- * to its numerical representation. Otherwise it will return a string.
- * (ie September => 9)
- * (ie Dec => 12)
- * 
- * @param {String} monthString strng representation of a month
- * @returns {Number} the numerical representation of a month
- * @returns {String} if the inputted value is invalid
- */
-function monthToIndex(monthString) {
-  switch(m.toLowerCase()) {
-    case "january":
-    case "jan":
-      month = 1;
-      break;
-    case "feburary":
-    case "feb":
-      month = 2;
-      break;
-    case "april":
-    case "apr":
-      month = 3;
-      break;
-    case "march":
-    case "mar":
-      month = 4;
-      break;
-    case "may":
-      month = 5;
-      break;
-    case "june":
-    case "jun":
-      month = 6;
-      break;
-    case "july":
-    case "jul":
-      month = 7;
-      break;
-    case "august":
-    case "aug":
-      month = 8;
-      break;
-    case "september":
-    case "sept":
-      month = 9;
-      break;
-    case "october":
-    case "oct":
-      month = 10;
-      break;
-    case "november":
-    case "nov":
-      month = 11;
-      break;
-    case "december":
-    case "dec":
-      month = 12;
-      break;
-    default:
-      month = "Entered month is invalid";
-  }
-
-  return month;
-
-} 
 
 module.exports = addTodoEvent;
