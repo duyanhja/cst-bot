@@ -20,7 +20,7 @@ function addTodoEvent(m, d, t, description, database) {
   }
 
   if (moment(d, ["D", "DD"]).isValid()) {
-    date = moment(d, ["D", "DD"]).format("DD");
+    day = moment(d, ["D", "DD"]).format("DD");
   } else {
     return "Invalid Date";
   }
@@ -39,8 +39,9 @@ function addTodoEvent(m, d, t, description, database) {
   }
 
   let dateString = month + "-" + day + "-" + year + " " + time;
-  if (moment(dateString, ["MM-DD-YYYY HH:mm", "MM-DD-YYYY"]).isValid()) {
-    eventDate = moment(dateString, ["MM-DD-YYYY HH", "MM-DD-YYYY H", "MM-DD-YYYY HH:mm", "MMMM-DD-YYYY HH:mm"]).format("MMM-DD-YYYY HH:mm");
+  if (moment(dateString, ["MMM-DD-YYYY HH:mm", "MM-DD-YYYY"]).isValid()) {
+    eventDate = moment(dateString, ["MMM-DD-YYYY HH", "MMM-DD-YYYY H", "MMM-DD-YYYY HH:mm", "MMMM-DD-YYYY HH:mm"]).format("MMM-DD-YYYY HH:mm");
+    console.log(eventDate);
   }
 
   let sortDate = parseInt(moment(eventDate, "MMM-DD-YYYY HH:mm").format("X"));
