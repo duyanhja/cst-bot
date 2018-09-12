@@ -23,7 +23,7 @@ let printToDo = (msg, database) => {
     let index = 1;
     snap.forEach((key) => {
       if (moment().format('X') > key.val()["sortDate"]) {
-        firebase.ref('todo/').child(key.key).remove();
+        database.ref('todo/').child(key.key).remove();
       } else {
         database.ref('todo/').child(key.key).update({index: index});
         output += `${index++}\t${key.val()["month"]} ${key.val()["day"]} @ ${key.val()["time"]} - ${key.val()["description"]}\n`;
