@@ -38,7 +38,7 @@ function addTodoEvent(m, d, t, description, database) {
     year = moment().format("YYYY");
   }
 
-  let dateString = month + "-" + date + "-" + year + " " + time;
+  let dateString = month + "-" + day + "-" + year + " " + time;
   if (moment(dateString, ["MM-DD-YYYY HH:mm", "MM-DD-YYYY"]).isValid()) {
     eventDate = moment(dateString, ["MM-DD-YYYY HH", "MM-DD-YYYY H", "MM-DD-YYYY HH:mm", "MMMM-DD-YYYY HH:mm"]).format("MMM-DD-YYYY HH:mm");
   }
@@ -49,7 +49,7 @@ function addTodoEvent(m, d, t, description, database) {
     date: eventDate,
     sortDate: sortDate,
     month: month,
-    day: date,
+    day: day,
     time: moment(time, "HH:mm").format("hh:mma"),
     description: description
   });
