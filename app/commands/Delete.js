@@ -18,7 +18,7 @@ let deleteToDo = (index, msg, firebase) => {
         firebase.ref('todo/').child(key.key).remove();
       } else if (key.val()["index"] === parseInt(index)) {
         console.log('del2');
-        msg.channel.send(`Succesfully deleted item ${key.val()["description"]}`);
+        msg.channel.send(`Succesfully deleted item \`\`\`${key.val()["description"]}\`\`\``);
         firebase.ref('todo/').child(key.key).remove();
         return;
       }
