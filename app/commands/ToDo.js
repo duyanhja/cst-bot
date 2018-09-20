@@ -21,9 +21,11 @@ let printToDo = (msg, database) => {
     todo = snap.val();
     let output = '';
     let index = 1;
+
     snap.forEach((key) => {
-      if (moment().format('X') > key.val()["sortDate"]) {
+      if ( parseInt(moment().format('X')) > key.val()["sortDate"]) {
         database.ref('todo/').child(key.key).remove();
+
       } else {
         database.ref('todo/').child(key.key).update({index: index});
         output += `${index++}\t${key.val()["month"]} ${key.val()["day"]} @ ${key.val()["time"]} - ${key.val()["description"]}\n`;

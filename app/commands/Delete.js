@@ -1,6 +1,7 @@
 const moment = require('moment');
 
 /**
+ * Deletes the Todo item on the database.
  * 
  * @param {*} index the index to be deleted from the database
  * @param {*} msg the Discord Message Object
